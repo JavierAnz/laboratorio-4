@@ -1,64 +1,93 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <!--Import Google Icon Font-->
-  
-    <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-            
-    <link rel="stylesheet" href="css/styles.css">
-
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Let browser know website is optimized for mobile-->
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tarea #4</title>
+    <!-- Materialize CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
   </head>
-
   <body>
-    <nav>
-        <div class="nav-wrapper">
-          <a href="#" class="brand-logo" id="text-logo" "> laboratorio #4</a>
+    <div class="container">
+      <h3>Tarea #4</h3>
+      <div class="row">
+        <div class="input-field col s6">
+          <input type="number" id="limiteInferior" min="1" max="100" />
+          <label for="limiteInferior">Límite Inferior</label>
         </div>
-      </nav>
-    <div id="content">
-
-    <div class="row">
-      <div class="col s12 m6" id="Opciones">
-        <div class="card  green lighten-4">
-          <div class="card-content black-text" >
-            <span class="card-title">Opciones</span>
-          </div>
-          <div class="card-action">
-            <div class="row">
-              <form class="col s6">
-                <div class="row">
-                  <div class="input-field col s3">
-                    <i class="material-icons prefix">arrow_forward</i>
-                    <input id="icon_prefix" type="number" class="validate" />
-                    <label for="icon_prefix"> First number</label>
-
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="input-field col s3">
-                    <i class="material-icons prefix">arrow_forward</i>
-                    <input id="icon_telephone" type="number" class="validate" />
-                    <label for="icon_telephone">Second number</label>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
+        <div class="input-field col s6">
+          <input type="number" id="limiteSuperior" min="1" max="100" />
+          <label for="limiteSuperior">Límite Superior</label>
         </div>
       </div>
+      <div class="row">
+        <div class="switch">
+          <label>
+            Mostrar uno
+            <input type="checkbox" id="mostrarUno" />
+            <span class="lever"></span>
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <button class="btn waves-effect waves-light" id="mostrarBtn">
+          Mostrar
+        </button>
+      </div>
+      <div class="row" id="imagesContainer"></div>
     </div>
-    <div class="row">
-        <h1> hola</h1>
-        
-</div>
 
-    <!--JavaScript at end of body for optimized loading-->
-    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <!-- Materialize JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const mostrarBtn = document.getElementById("mostrarBtn");
+        mostrarBtn.addEventListener("click", function () {
+          const limiteInferior = parseInt(
+            document.getElementById("limiteInferior").value
+          );
+          const limiteSuperior = parseInt(
+            document.getElementById("limiteSuperior").value
+          );
+          const mostrarUno = document.getElementById("mostrarUno").checked;
+
+          if (limiteInferior >= limiteSuperior) {
+            alert("El límite inferior debe ser menor que el límite superior");
+            return;
+          }
+
+          const imagesContainer = document.getElementById("imagesContainer");
+          imagesContainer.innerHTML = "";
+
+          if (mostrarUno) {
+            fetchImage(limiteInferior);
+          } else {
+            for (let i = limiteInferior; i <= limiteSuperior; i++) {
+              fetchImage(i);
+            }
+          }
+        });
+
+        function fetchImage(imageNumber) {
+          fetch(`http://jsonplaceholder.typicode.com/photos/${imageNumber}`)
+            .then((response) => response.json())
+            .then((data) => {
+              const imageUrl = data.url;
+              const imageElement = document.createElement("img");
+              imageElement.src = imageUrl;
+              imageElement.style.width = "100px";
+              imageElement.style.height = "100px";
+              imageElement.style.padding = "5px";
+              document
+                .getElementById("imagesContainer")
+                .appendChild(imageElement);
+            })
+            .catch((error) => console.error("Error fetching image:", error));
+        }
+      });
+    </script>
   </body>
 </html>
