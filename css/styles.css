@@ -1,0 +1,23 @@
+#text-logo{
+    padding-left: 3rem;
+}
+
+.nav-wrapper{
+    background-color: cadetblue;
+}
+
+#content{
+    display: flex;
+    flex-direction: row;
+}
+
+.row{
+    width: 80rem;
+    margin-left: 8rem;
+    margin-top: 5rem;
+}
+
+#pciones{
+
+    padding-bottom: 0%;    
+}
